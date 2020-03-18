@@ -559,7 +559,7 @@ Audit5_1_3="$(defaults read "$plistlocation" OrgScore5_1_3)"
 # If client fails, then remediate
 if [ "$Audit5_1_3" = "1" ]; then
 	IFS=$'\n'
-	for sysPermissions in $( find /System -type d -perm -2 | grep -v "Public/Drop Box" ); do
+	for sysPermissions in $( find /System -type d -perm -2 \! \( -path '*/private/tmp' -o -path '*/Public/Drop Box' \) ); do
 		chmod -R o-w "$sysPermissions"
 	done
 	echo "$(date -u)" "5.1.3 enforced" | tee -a "$logFile"
